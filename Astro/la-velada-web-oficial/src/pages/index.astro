@@ -1,0 +1,28 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Countdown from "@/sections/Countdown.astro"
+
+import Hero from "@/sections/Hero.astro"
+import Info from "@/sections/Info.astro"
+import PrincipalDate from "@/sections/PrincipalDate.astro"
+
+import SelectYourBoxer from "@/sections/SelectYourBoxer.astro"
+import Sponsors from "@/sections/Sponsors.astro"
+---
+
+<Layout
+	description="Web Oficial de La Velada del Año IV, evento de boxeo entre streamers y creadores de contenido, organizado por Ibai Llanos"
+	title="La Velada del Año 4 - Evento de Boxeo de Ibai Llanos"
+	canonical="https://lavelada.es"
+>
+	<Hero />
+
+	<main>
+		<PrincipalDate />
+		<SelectYourBoxer />
+		<Info />
+		<!-- <Boxing /> -->
+		<Sponsors />
+		<Countdown />
+	</main>
+</Layout>

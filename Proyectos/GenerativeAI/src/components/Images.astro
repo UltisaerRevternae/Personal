@@ -1,0 +1,73 @@
+<script>
+  import { imagesStorage } from "functions/localStorage/imagesStorage";
+  import { getPatron } from "functions/patron/getPatron";
+  import "./style.css";
+
+  const container = document.querySelector("#containerGallery");
+  !!container ? container.classList.add("container") : '';
+
+  const data = await imagesStorage();
+  const patron = getPatron(data.length);
+
+  const gallery = data
+    .map(
+      (element: {
+        url: string,
+        img: string,
+        metadata: string,
+        tags: string[]
+      }, index: number) => { 
+        
+        return `
+        <section class="containerSection ${patron[index]}"
+          data-aspect="${element.metadata.split('--ar ')[1] || '1:1'}"
+          data-image="${element.image}"
+        >
+          <div class="imagesContainer">
+            <img class="images" src=${element.url} alt=${element.img} />
+            <p>${element.metadata.substring(16, 80).trim()}</p>
+          </div>
+          <div class="tags">
+            ${element.tags
+              .slice(0, 3)
+              .map((value: string) => `<span>${value.split(' ')[0]}</span>`)
+              .join("")}
+          </div>
+        </section>`}
+    )
+    .join("");
+
+    !!container ? container.innerHTML = gallery : '';
+
+    const aspectImages =  document.querySelectorAll(".containerSection")
+
+    const wideListener = (element) => {
+      element.addEventListener('click' , () => {
+        window.location.href = `${window.location.origin}/views/wide?${element.dataset.image}`;
+      })
+    }
+
+    const tallListener = (element) => {
+      element.addEventListener('click' , () => {
+        window.location.href = `${window.location.origin}/views/tall?${element.dataset.image}`;
+      })
+    }
+
+    const normalListener = (element) => {
+      element.addEventListener('click' , () => {
+        window.location.href = `${window.location.origin}/views/normal?${element.dataset.image}`;
+      })
+    }
+
+    aspectImages.forEach((section) => {
+      const aspect = section.dataset.aspect
+      const [wide, tall] = aspect.split(':').map(Number);
+      if (wide === tall) { normalListener(section)}
+      if (wide > tall) { wideListener(section)}
+      if (wide < tall) { tallListener(section) }
+    })
+
+
+</script>
+
+<div id="containerGallery">Loadings</div>

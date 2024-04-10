@@ -1,0 +1,54 @@
+<header>
+  <div class="header_title">
+    <img
+      src="https://lh3.googleusercontent.com/a/ACg8ocIb5mQbWruOc8qbQn0sh4zt-zabwLUuhgGt5Qp6IThgkg=s288-c-no"
+      alt="Profile User"
+    />
+    <h1>Generative AI</h1>
+  </div>
+</header>
+
+<style>
+  @layer navbar {
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      height: 80px;
+    }
+    h1 {
+      font-size: var(--size-Big);
+      font-weight: var(--font-weight-bold);
+    }
+
+    img {
+      border-radius: 50%;
+      aspect-ratio: 1 / 1;
+      width: 32px;
+      object-fit: cover;
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  @media screen and (min-width: 760px) {
+    body {
+      padding: 32px;
+    }
+    div {
+      justify-content: start;
+      gap: 20px;
+    }
+    img {
+        position: relative;
+        width: 60px;
+      }
+  }
+</style>

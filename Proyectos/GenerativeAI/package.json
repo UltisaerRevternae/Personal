@@ -1,0 +1,25 @@
+{
+  "name": "generativeai",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.5.9",
+    "@astrojs/react": "^3.1.0",
+    "@aws-sdk/client-s3": "^3.535.0",
+    "astro": "^4.5.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-lazy-load-image-component": "^1.6.0",
+    "typescript": "^5.4.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66"
+  }
+}

@@ -1,0 +1,80 @@
+---
+interface Props {
+  aspect: "1/1" | "2/1" | "1/2";
+}
+
+const { aspect } = Astro.props;
+import expand from "../../../public/icons/expand.svg";
+import more from "../../../public/icons/more.svg";
+
+---
+
+<div>
+  <div class="containerImage"
+  class:list={[
+    "containerImage",
+    {
+      containerImage_normal: aspect === "1/1",
+      containerImage_wide: aspect === "2/1",
+      containerImage_tall: aspect === "1/2",
+    },
+  ]}>
+    <img
+      class="imageAstro"
+      src=""
+      alt=""
+    />
+    <img class="icon expandIcon" src={expand.src} alt="" />
+    <img class="icon opcionsIcon" src={more.src} alt="" />
+  </div>
+</div>
+
+<style>
+  @layer aspectContainer {
+    .containerImage {
+      position: relative;
+      border-radius: 16px;
+    }
+    .containerImage_normal {
+      width: 60%;
+      aspect-ratio: 1 / 1;
+      max-width: 600px;
+      min-width: 200px;
+    }
+    .containerImage_wide {
+      width: 100%;
+      aspect-ratio: 2 / 1;
+
+    }
+    .containerImage_tall {
+      width: 60%;
+      aspect-ratio: 1 / 2;
+
+    }
+  }
+
+  @layer image {
+    .imageAstro {
+      border-radius: 16px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  
+  @layer icon {
+    .icon {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+    }
+    .expandIcon {
+      top: 12px;
+      right: 12px;
+    }
+    .opcionsIcon {
+      bottom: 16px;
+      left: 4px;
+    }
+  }
+
+</style>

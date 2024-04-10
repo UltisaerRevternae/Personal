@@ -1,0 +1,65 @@
+---
+import type { OptionsUserMeta, OptionsUserKeys } from "../types/optionsUser";
+
+interface Props {
+  name: OptionsUserKeys;
+}
+
+const { name } = Astro.props;
+
+import categories from "../icons/categories.svg";
+import upload from "../icons/upload.svg";
+import favorite from "../icons/favorite.svg";
+import search from "../icons/search.svg";
+import generate from "../icons/generate.svg";
+
+const icons: OptionsUserMeta = {
+  categories,
+  upload,
+  favorite,
+  search,
+  generate,
+};
+
+const icon = name ? icons[name].src : "";
+---
+
+<div class="container">
+  <a class="image" href="/">
+    <img src={icon} alt={name} />
+    <p class="text">{name.substring(0, 1).toUpperCase()}{name.substring(1)}</p>
+  </a>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+  }
+  .image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  img {
+    width: 40px;
+    height: 28px;
+  }
+  .text {
+    display: contents;
+    text-align: center;
+    font-size: clamp(8px, 3vw, 12px);
+    color: var(--primary-color);
+    margin: 0;
+  }
+
+  a:hover {
+    .text {
+      color: var(--focus-color);
+    }
+    img {
+      filter: hue-rotate(320deg) saturate(300%);
+    }
+  }
+</style>

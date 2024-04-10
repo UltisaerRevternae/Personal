@@ -1,0 +1,70 @@
+---
+import Header from "../components/Header.astro"
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Astro description" />
+  <meta name="viewport" content="width=device-width" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kodchasan&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="icon" type="image/svg+xml" href="https://generative-ai-ultisaer.s3.sa-east-1.amazonaws.com/images/astronaut_skull_in_cosmic_space.png" />
+  <title>{title}</title>
+</head>
+<body>
+  <Header></Header>
+  <slot />
+</body>
+</html>
+
+<style is:global>
+	:root {
+  --primary-color: #e1ffff;
+  --focus-color: #9fffc7;
+  --background-color: #001717;
+  --secundary-color: #042225;
+  --soft-color: #415252 ;
+  
+  --font-principal: "Kodchasan", sans-serif;
+  --font-weight-bold: 700;
+  --font-weight-normal: 300;
+  --size-Big: '20px';
+  --size-Medium: '16px';
+  --size-Small: '12px';
+  --size-Low: '8px';
+}
+
+  @layer reset {
+
+    *,
+    *:after,
+    *:before {
+      box-sizing: border-box;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-principal);
+      color: var(--primary-color);
+      background-color: var(--background-color);
+      padding: 70px 12px 12px 12px;
+      min-height: 100dvh;
+    }
+  }
+
+</style>

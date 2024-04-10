@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Title from '../../components/views/Title.astro';
+import Image from '../../components/views/Image.astro';
+---
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentUrl = window.location.href;
+    const imagesS3 = localStorage.getItem('imagesS3');
+    let dataStorage;
+
+    if (imagesS3) dataStorage = JSON.parse(imagesS3).s3;
+    else window.location.href = `${window.location.origin}/404`;
+
+    const imageName = currentUrl.split('?')[1];
+    const element = dataStorage?.find(({ image } : { image: string}) => image === imageName);
+
+    if (!element) {
+      window.location.href = `${window.location.origin}/404`;
+    } else {
+      const title = element.image.split('/')[1].split('.png')[0].split('_').join(' ');
+      const data = {
+        title: title.charAt(0).toUpperCase() + title.slice(1),
+        url: element.url,
+        description: element.metadata,
+        tags: element.tags
+      };
+
+      const titleAstro = document.querySelector('.titleAstro');
+      const imageAstro = document.querySelector('.imageAstro')
+      if (titleAstro) titleAstro.textContent = data.title;
+      if (imageAstro) imageAstro.setAttribute('src' , data.url)
+
+    }
+  });
+</script>
+
+<Layout title='Detail Image'>
+  <div>
+    <Title></Title>
+    <div class="containerImage">
+      <Image aspect='1/2'></Image>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  div {
+    display: grid;
+    gap: 16px;
+    place-content: center;
+    max-width: 600px;
+    margin: 60px auto;
+  }
+</style>

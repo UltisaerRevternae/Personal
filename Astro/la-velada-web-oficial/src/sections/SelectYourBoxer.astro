@@ -1,0 +1,125 @@
+---
+import ColumnBoxers from "@/components/ColumnBoxers.astro"
+import Typography from "@/components/Typography.astro"
+import BoxerBigImage from "@/components/BoxerBigImage.astro"
+import { BOXERS } from "@/consts/boxers"
+import { COUNTRIES } from "@/consts/countries"
+
+const listOfBoxers = BOXERS.map((boxer) => {
+	const { country } = boxer
+	const countryName = COUNTRIES[country]?.name || ""
+	return { ...boxer, countryName }
+})
+
+// split in 4 columns
+const boxerColumns = [
+	listOfBoxers.slice(0, 3),
+	listOfBoxers.slice(3, 6),
+	listOfBoxers.slice(6, 9),
+	listOfBoxers.slice(9, 12),
+]
+---
+
+<section class="my-40 hidden md:block">
+	<Typography
+		as="h3"
+		variant="atomic-title"
+		color="primary"
+		class:list={"text-center"}
+		id="selectedBoxer"
+	>
+		elige tu luchador
+	</Typography>
+
+	<Typography as="p" variant="body" color="neutral" class="mt-4 text-center">
+		Conoce los detalles de cada boxeador
+	</Typography>
+
+	<div class="mt-32 flex flex-row items-center justify-center gap-8">
+		<article class="absolute flex w-full flex-col items-center justify-center">
+			<BoxerBigImage id="el-mariana" name="El Mariana" country="mx" countryName="México" />
+		</article>
+		<div class="boxers-nav flex w-full justify-between">
+			<nav class="boxers-lists flex h-full justify-start gap-2 py-4">
+				<ColumnBoxers boxers={boxerColumns[0]} />
+				<ColumnBoxers boxers={boxerColumns[1]} class="mt-4" />
+			</nav>
+
+			<nav class="boxers-lists flex h-full justify-end gap-2 py-4">
+				<ColumnBoxers boxers={boxerColumns[2]} class="mt-4" />
+				<ColumnBoxers boxers={boxerColumns[3]} />
+			</nav>
+		</div>
+	</div>
+</section>
+
+<script>
+	document.addEventListener("astro:page-load", () => {
+		const boxerLinks = document.querySelectorAll(
+			".boxer-link"
+		) as globalThis.NodeListOf<HTMLAnchorElement>
+		const boxerNav = document.querySelector(".boxers-nav")
+		const boxerTitle = document.querySelector(".boxer-title") as HTMLImageElement
+		const boxerPhoto = document.querySelector(".boxer-photo") as HTMLPictureElement
+		const boxerCountry = document.querySelector(".boxer-flag") as HTMLImageElement
+
+		function activateBoxer(element: HTMLElement, link: HTMLElement, replaceUrl: boolean = false) {
+			if (element.classList.contains("active")) return
+
+			const { id, name, country, countryName } = element?.dataset
+
+			const splitName = name?.split(" ") ?? []
+			const lastName = splitName[splitName.length - 1]
+			const firstNames = splitName.slice(0, splitName.length - 1).join(" ")
+			const spanNames = `
+				<span class="flex flex-col">
+					<span class="text-4xl">${firstNames?.toLocaleLowerCase()}</span>
+					<span>${lastName?.toLocaleLowerCase()}</span>
+				</span>
+			`
+
+			boxerNav?.querySelector(".active")?.classList.remove("active")
+			link.classList.add("active")
+			if (replaceUrl) {
+				history.replaceState({}, "", `?boxer=${id}`)
+			}
+
+			const boxerSrc = `/img/boxers/${id}-big`
+
+			boxerPhoto.getElementsByTagName("source")[0].srcset = `${boxerSrc}.avif`
+			boxerPhoto.getElementsByTagName("img")[0].src = `${boxerSrc}.webp`
+			boxerTitle.innerHTML = spanNames ?? ""
+			boxerCountry.src = `/img/flags/${country}.webp`
+			boxerPhoto.getElementsByTagName("img")[0].alt = `Fotografía de ${name}`
+			boxerCountry.alt = `Bandera de ${countryName}`
+		}
+
+		const urlParams = new URLSearchParams(window.location.search)
+		const boxerId = urlParams.get("boxer") ?? "el-mariana"
+		const boxerEl = document.querySelector(`[data-id="${boxerId}"]`) as HTMLElement
+		if (boxerEl) {
+			activateBoxer(boxerEl, boxerEl, false)
+		}
+
+		boxerLinks.forEach((link) => {
+			link.addEventListener("mouseenter", (event) => {
+				const currentTarget = event.currentTarget as HTMLElement
+				if (currentTarget.classList.contains("active")) return
+				activateBoxer(currentTarget, link, true)
+			})
+		})
+	})
+</script>
+
+<style>
+	.boxers-lists {
+		@apply relative h-32 w-screen overflow-x-scroll;
+		scrollbar-width: none;
+	}
+
+	@media (min-width: 1280px) {
+		.boxers-lists {
+			@apply h-auto w-full max-w-none overflow-hidden py-2;
+		}
+	}
+</style>
